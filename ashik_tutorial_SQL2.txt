@@ -1,0 +1,98 @@
+SELECT * FROM `file_entry` WHERE case_no IN ('Writ.Peti_2535_2001','Writ.Peti_2320_2001')
+
+SELECT id, user_id, case_no, image, time_stamp FROM `final_check_entry` WHERE case_no IN ('Writ.Peti_2535_2001','Writ.Peti_2320_2001')
+ORDER BY id;
+
+
+SELECT a.case_no, b.user_id, a.case_type, b.pdf_count, b.image, b.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add` b  
+ON a.case_no= b.case_no WHERE ISNULL(b.case_no)
+UNION ALL
+SELECT a.case_no, c.user_id, a.case_type, c.pdf_count, '-', c.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add_final` c  
+ON a.case_no= c.case_no WHERE ISNULL(c.case_no)
+UNION ALL
+SELECT a.case_no, d.user_id, a.case_type, d.pdf_count, pdf_photo, d.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `final_check_entry` d  
+ON a.case_no= d.case_no WHERE ISNULL(c.case_no)
+
+
+
+SELECT a.case_no, b.user_id, a.case_type, b.pdf_count, b.image, 'SCAN_ADD' AS Tname, b.case_no AS Cname FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add` b  
+ON a.case_no= b.case_no 
+UNION ALL
+SELECT a.case_no, c.user_id, a.case_type, c.pdf_count, '-', 'SCAN_ADD_FINAL',c.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add_final` c  
+ON a.case_no= c.case_no 
+UNION ALL
+SELECT a.case_no, d.user_id, a.case_type, d.pdf_count, d.pdf_photo, 'FINAL_CHECK_ENTRY', d.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `final_check_entry` d  
+ON a.case_no= d.case_no
+
+
+
+SELECT x.case_no, x.user_id, x.case_type, x.pdf_count, x.image, x.Tname, x.Cname FROM
+(SELECT a.case_no, b.user_id, a.case_type, b.pdf_count, b.image, 'SCAN_ADD' AS Tname, b.case_no AS Cname FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add` b  
+ON a.case_no= b.case_no 
+UNION ALL
+SELECT a.case_no, c.user_id, a.case_type, c.pdf_count, '-', 'SCAN_ADD_FINAL',c.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add_final` c  
+ON a.case_no= c.case_no 
+UNION ALL
+SELECT a.case_no, d.user_id, a.case_type, d.pdf_count, d.pdf_photo, 'FINAL_CHECK_ENTRY', d.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `final_check_entry` d  
+ON a.case_no= d.case_no) x WHERE ISNULL(x.Cname)
+
+
+SELECT DISTINCT x.case_no FROM
+(SELECT a.case_no, b.user_id, a.case_type, b.pdf_count, b.image, 'SCAN_ADD' AS Tname, b.case_no AS Cname FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add` b  
+ON a.case_no= b.case_no 
+UNION ALL
+SELECT a.case_no, c.user_id, a.case_type, c.pdf_count, '-', 'SCAN_ADD_FINAL',c.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add_final` c  
+ON a.case_no= c.case_no 
+UNION ALL
+SELECT a.case_no, d.user_id, a.case_type, d.pdf_count, d.pdf_photo, 'FINAL_CHECK_ENTRY', d.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `final_check_entry` d  
+ON a.case_no= d.case_no) x WHERE ISNULL(x.Cname)
+
+
+
+--->
+SELECT y.case_no, y.user_id, y.case_type, y.pdf_count, y.image, y.Tname, y.Cname FROM
+(SELECT a.case_no, b.user_id, a.case_type, b.pdf_count, b.image, 'SCAN_ADD' AS Tname, b.case_no AS Cname FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add` b  
+ON a.case_no= b.case_no 
+UNION ALL
+SELECT a.case_no, c.user_id, a.case_type, c.pdf_count, '-', 'SCAN_ADD_FINAL',c.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add_final` c  
+ON a.case_no= c.case_no 
+UNION ALL
+SELECT a.case_no, d.user_id, a.case_type, d.pdf_count, d.pdf_photo, 'FINAL_CHECK_ENTRY', d.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `final_check_entry` d  
+ON a.case_no= d.case_no) y 
+WHERE y.case_no IN (SELECT DISTINCT x.case_no FROM
+(SELECT a.case_no, b.user_id, a.case_type, b.pdf_count, b.image, 'SCAN_ADD' AS Tname, b.case_no AS Cname FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add` b  
+ON a.case_no= b.case_no 
+UNION ALL
+SELECT a.case_no, c.user_id, a.case_type, c.pdf_count, '-', 'SCAN_ADD_FINAL',c.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `scan_add_final` c  
+ON a.case_no= c.case_no 
+UNION ALL
+SELECT a.case_no, d.user_id, a.case_type, d.pdf_count, d.pdf_photo, 'FINAL_CHECK_ENTRY', d.case_no FROM 
+(SELECT case_no, case_type  FROM `file_entry`) a LEFT OUTER JOIN `final_check_entry` d  
+ON a.case_no= d.case_no) x WHERE ISNULL(x.Cname)
+)
+--->
+
+
+ 
+
+
+
+
+ 

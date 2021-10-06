@@ -1,0 +1,15 @@
+SELECT case_no, Count(image) FROM `final_check_entry` Group By case_no Having count(image) > 2;
+
+
+SELECT a.case_no, a.parties_name, a.total_page, b.C_PDF FROM `file_entry` a JOIN
+(SELECT case_no, Count(image) AS C_PDF FROM `final_check_entry` Group By case_no Having count(image) > 2) b
+ON a.case_no = b.case_no ORDER BY b.C_PDF DESC
+
+
+
+2021-10-03 13:26:33
+
+Writ.Peti_5912_2001
+
+
+SELECT * FROM `final_check_entry` WHERE case_no = 'Writ.Peti_5912_2001' AND time_stamp = '2021-10-03 13:26:33'

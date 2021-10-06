@@ -1,0 +1,33 @@
+<?php
+ require '../db/db.php';
+$case_no =$_REQUEST['case_no'];
+$result = $mysqli->query("SELECT * FROM entry_filee WHERE case_no  = '$case_no'");
+$test = mysqli_fetch_array($result);
+if (!$result) 
+		{
+		die("Error: Data not found..");
+		} 	 
+				$user_id= $test['user_id'] ;					
+				 
+     $txt ="$case_no"; 
+    
+	require('code128_abc.php');
+	$pagesize = array(180, 130);
+
+	$pdf=new PDF_Code128('P','mm', $pagesize);
+	$pdf->AliasNbPages();
+	$pdf->AddPage();
+	$pdf->AddFont('DejaVu','','DejaVuSansCondensed.ttf',true);
+
+	$pdf->Code128(5,5,"".$txt."",60,12);
+
+	$pdf->SetFont('Arial','B',10);
+	$pdf->Cell(5 ,5,'',0,0);
+	$pdf->Cell(5 ,5,"".$txt."",0,0); 
+
+	$pdf->Output();
+	
+	
+	 
+ 
+?>					  
